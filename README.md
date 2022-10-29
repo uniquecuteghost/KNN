@@ -1,22 +1,22 @@
-
-from sklearn.datasets import load_iris
+from sklearn.datasets import fetch_20newsgroups
 
 from sklearn.model_selection import train_test_split
 
-from sklearn.preprocessing import StandardScaler
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB
 
 
-def knn_iris():
 
-    iris = load_iris()
-    x_train, x_test, y_train, y_test = train_test_split(iris.data, iris.target, random_state=6)
-    transfer = StandardScaler()
+def nb_news():
+
+    news = fetch_20newsgroups(subset="all")
+    x_train,x_test,y_train, y_test = train_test_split(news.data, news.target)
+    transfer =  TfidfVectorizer()
     x_train = transfer.fit_transform(x_train)
     x_test = transfer.transform(x_test)
 
-    estimator = KNeighborsClassifier(n_neighbors=3)
+    estimator = MultinomialNB()
     estimator.fit(x_train, y_train)
 
     y_predict = estimator.predict(x_test)
@@ -26,12 +26,8 @@ def knn_iris():
     score = estimator.score(x_test, y_test)
     print("准确率为:\n", score)
 
-
-
-
-
-
     return None
 
 if __name__ == "__main__":
-    knn_iris()
+
+    nb_news()
